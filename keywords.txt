@@ -1,0 +1,27 @@
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+ACAN_STM32_Settings	KEYWORD1
+CANMessage	KEYWORD1
+ACAN_STM32	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+end	KEYWORD2
+tryToSendReturnStatus	KEYWORD2
+available0	KEYWORD2
+receive0	KEYWORD2
+available1	KEYWORD2
+receive1	KEYWORD2
+dispatchReceivedMessage	KEYWORD2
+dispatchReceivedMessage0	KEYWORD2
+dispatchReceivedMessage1	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
