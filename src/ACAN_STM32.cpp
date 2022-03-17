@@ -205,7 +205,11 @@ uint32_t ACAN_STM32::internalBegin (const ACAN_STM32_Settings & inSettings,
 //---------------------------------------------- Leave init mode
 //ok, now leave init mode (and remove the NART bit).
 //We just set ABOM (Automatic Bus Off recovery, in case of big pb…)
-  mCAN->MCR = CAN_MCR_ABOM ;
+  uint32_t mcr = CAN_MCR_ABOM ;
+  if (inSettings.mTransmitPriority == ACAN_STM32_Settings::BY_REQUEST_ORDER) {
+    mcr |= CAN_MCR_TXFP ;
+  }
+  mCAN->MCR = mcr ;
   while ((mCAN->MCR & CAN_MCR_INRQ) != 0) {} // Wait until it is ok.
   while ((mCAN->TSR & CAN_TSR_TME0) == 0) {} // Wait until Transmit box is empty.
 

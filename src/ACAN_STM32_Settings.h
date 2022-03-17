@@ -30,6 +30,14 @@ class ACAN_STM32_Settings {
   } ModuleMode ;
 
 //··································································································
+//··································································································
+
+  public: typedef enum {
+    BY_IDENTIFIER,
+    BY_REQUEST_ORDER
+  } TransmitPriority ;
+
+//··································································································
 
 //--- Constructor for a given baud rate
   public: explicit ACAN_STM32_Settings (const uint32_t inWhishedBitRate,
@@ -49,6 +57,9 @@ class ACAN_STM32_Settings {
 
 //--- Open collector output
   public: bool mOpenCollectorOutput = false ; // true --> open collector, false --> push / pull
+
+//--- Transmit Priority
+  public: TransmitPriority mTransmitPriority = BY_IDENTIFIER ;
 
 //--- Receive FIFO sizes
   public: uint16_t mDriverReceiveFIFO0Size = 32 ;
