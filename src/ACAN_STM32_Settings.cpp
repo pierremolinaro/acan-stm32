@@ -1,4 +1,4 @@
-#include "ACAN_STM32_Settings.h"
+#include <ACAN_STM32_Settings.h>
 
 //----------------------------------------------------------------------------------------------------------------------
 //    CAN Settings
@@ -60,7 +60,7 @@ mWhishedBitRate (inWhishedBitRate) {
   const uint32_t W = bestTQCount * mWhishedBitRate * mBitRatePrescaler ;
   const uint64_t diff = (CAN_CLOCK_FREQUENCY > W) ? (CAN_CLOCK_FREQUENCY - W) : (W - CAN_CLOCK_FREQUENCY) ;
   const uint64_t ppm = uint64_t (1000 * 1000) ;
-  mBitSettingOk = (diff * ppm) <= (uint64_t (W) * inTolerancePPM) ;
+  mBitRateClosedToDesiredRate = (diff * ppm) <= (uint64_t (W) * inTolerancePPM) ;
 } ;
 
 //----------------------------------------------------------------------------------------------------------------------

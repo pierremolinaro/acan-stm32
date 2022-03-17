@@ -210,9 +210,9 @@ class ACAN_STM32 {
 //--- begin; returns a result code:
 //  0 : Ok
 //  other: every bit denotes an error
-  public: static const uint32_t kNotConformFilter    = 1 << 13 ;
-  public: static const uint32_t kCANBitConfiguration      = 1 << 16 ;
-  public: static const uint32_t kFilterCountGreaterThan14 = 1 << 17 ;
+//  The error code are thoses returned by ACAN_STM32_Settings::CANBitSettingConsistency
+//  and the following one
+  public: static const uint32_t kActualBitRateTooFarFromDesiredBitRate = 1 << 16 ;
 
   public: uint32_t begin (const ACAN_STM32_Settings & inSettings,
                           const ACAN_STM32::Filters & inFilters = ACAN_STM32::Filters ()) ;

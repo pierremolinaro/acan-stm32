@@ -71,14 +71,10 @@ static const uint32_t MAX_FILTER_COUNT = 14 ;
 
 uint32_t ACAN_STM32::begin (const ACAN_STM32_Settings & inSettings,
                             const ACAN_STM32::Filters & inFilters) {
-
-  uint32_t errorCode = inSettings.CANBitSettingConsistency () ; // No error code
+  uint32_t errorCode = inSettings.CANBitSettingConsistency () ;
 //--- No configuration if CAN bit settings are incorrect
-  if (!inSettings.mBitSettingOk) {
-    errorCode |= kCANBitConfiguration ;
-  }
-  if (inFilters.count () > MAX_FILTER_COUNT) {
-    errorCode |= kFilterCountGreaterThan14 ;
+  if ((errorCode == 0) && !inSettings.mBitRateClosedToDesiredRate) {
+    errorCode = kActualBitRateTooFarFromDesiredBitRate ;
   }
   if (0 == errorCode) {
     errorCode = internalBegin (inSettings, inFilters) ;

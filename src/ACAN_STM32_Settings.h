@@ -42,7 +42,7 @@ class ACAN_STM32_Settings {
   public: uint8_t mPhaseSegment2 = 8 ;  // 1...8
   public: uint8_t mRJW = 4 ; // 1...4
   public: bool mTripleSampling = true ;
-  public: bool mBitSettingOk = true ; // The above configuration is correct
+  public: bool mBitRateClosedToDesiredRate = false ;
 
 //--- Silent mode
   public: ModuleMode mModuleMode = NORMAL ;
