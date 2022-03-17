@@ -93,7 +93,7 @@ void loop () {
   }
 }
 ```
-`CANMessage` is the class that defines a CAN message. The `message` object is fully initialized by the default constructor. Here, we set the `id` to `0x542` for sending a standard data frame, without data, with this identifier.
+`CANMessage` is the class that defines a CAN message. The `message` object is fully initialized by the default constructor. Here, we set the `id` to `0x542` for sending a standard data frame, with 8 data bytes.
 
 The `can.tryToSendReturnStatus` tries to send the message. It returns `0` if the message has been sucessfully added to the driver transmit buffer.
 
