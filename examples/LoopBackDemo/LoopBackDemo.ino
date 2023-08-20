@@ -1,3 +1,4 @@
+//----------------------------------------------------------------------------------------
 // LoopBackDemo
 
 // This demo runs on NUCLEO_L432KC and NUCLEO_F303K8
@@ -6,11 +7,11 @@
 // can be observed on TxCAN pin (D2, e.g. PA12).
 
 // No external hardware is required.
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 #include <ACAN_STM32.h>
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 void setup () {
   pinMode (LED_BUILTIN, OUTPUT) ;
@@ -21,7 +22,7 @@ void setup () {
   }
 
   ACAN_STM32_Settings settings (125 * 1000) ; // 125 kbit/s
- 
+
   Serial.print ("Bit Rate prescaler: ") ;
   Serial.println (settings.mBitRatePrescaler) ;
   Serial.print ("Phase segment 1: ") ;
@@ -40,7 +41,7 @@ void setup () {
   Serial.println (settings.exactBitRate () ? "yes" : "no") ;
 
   settings.mModuleMode = ACAN_STM32_Settings::EXTERNAL_LOOP_BACK ;
-  
+
   const uint32_t errorCode = can.begin (settings) ;
   if (0 == errorCode) {
     Serial.println ("can ok") ;
@@ -50,13 +51,13 @@ void setup () {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static uint32_t gSendDate = 0 ;
 static uint32_t gSentCount = 0 ;
 static uint32_t gReceivedCount = 0 ;
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 void loop () {
   CANMessage message ;
@@ -86,3 +87,5 @@ void loop () {
     Serial.println (gReceivedCount) ;
   }
 }
+
+//----------------------------------------------------------------------------------------

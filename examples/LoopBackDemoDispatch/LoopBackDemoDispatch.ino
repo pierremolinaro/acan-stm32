@@ -1,18 +1,19 @@
+//----------------------------------------------------------------------------------------
 // This demo runs on NUCLEO_L432KC and NUCLEO_F303K8
 // The CAN module is configured in external loop back mode: it
 // internally receives every CAN frame it sends, and emitted frames
 // can be observed on TxCAN pin (D2, e.g. PA12).
 
 // No external hardware is required.
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 #include <ACAN_STM32.h>
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static bool gOk = true ;
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void filterError (const CANMessage & inMessage,
                          const char * inCallBackName) {
@@ -28,7 +29,7 @@ static void filterError (const CANMessage & inMessage,
   gOk = false ;
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static uint32_t gMatch1 = 0 ;
 static uint32_t gMatch2 = 0 ;
@@ -44,7 +45,7 @@ static uint32_t gMatch11 = 0 ;
 static uint32_t gMatch12 = 0 ;
 static uint32_t gMatch13 = 0 ;
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void callBack1 (const CANMessage & inMessage) {
   if (inMessage.ext && (inMessage.id == 0x5555) && !inMessage.rtr) {
@@ -54,7 +55,7 @@ static void callBack1 (const CANMessage & inMessage) {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void callBack2 (const CANMessage & inMessage) {
   if (inMessage.ext && (inMessage.id == 0x6666) && inMessage.rtr) {
@@ -64,7 +65,7 @@ static void callBack2 (const CANMessage & inMessage) {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void callBack3 (const CANMessage & inMessage) {
   if (!inMessage.ext && (inMessage.id == 0x123) && !inMessage.rtr) {
@@ -74,7 +75,7 @@ static void callBack3 (const CANMessage & inMessage) {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void callBack4 (const CANMessage & inMessage) {
   if (!inMessage.ext && (inMessage.id == 0x234) && inMessage.rtr) {
@@ -84,7 +85,7 @@ static void callBack4 (const CANMessage & inMessage) {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void callBack5 (const CANMessage & inMessage) {
   if (!inMessage.ext && (inMessage.id == 0x345) && inMessage.rtr) {
@@ -94,7 +95,7 @@ static void callBack5 (const CANMessage & inMessage) {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void callBack6 (const CANMessage & inMessage) {
   if (!inMessage.ext && (inMessage.id == 0x456) && !inMessage.rtr) {
@@ -104,7 +105,7 @@ static void callBack6 (const CANMessage & inMessage) {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void callBack7 (const CANMessage & inMessage) {
   if (inMessage.ext && ((inMessage.id & 0x1FFF67BD) == 0x6789) && !inMessage.rtr) {
@@ -114,7 +115,7 @@ static void callBack7 (const CANMessage & inMessage) {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void callBack8 (const CANMessage & inMessage) {
   if (inMessage.ext && ((inMessage.id & 0x1FFF67BD) == 0x6789) && inMessage.rtr) {
@@ -124,7 +125,7 @@ static void callBack8 (const CANMessage & inMessage) {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void callBack9 (const CANMessage & inMessage) {
   if (inMessage.ext && ((inMessage.id & 0x1FFF67BD) == 0x4789)) {
@@ -134,7 +135,7 @@ static void callBack9 (const CANMessage & inMessage) {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void callBack10 (const CANMessage & inMessage) {
   if (!inMessage.ext && ((inMessage.id & 0x7D5) == 0x405) && !inMessage.rtr) {
@@ -144,7 +145,7 @@ static void callBack10 (const CANMessage & inMessage) {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void callBack11 (const CANMessage & inMessage) {
   if (!inMessage.ext && ((inMessage.id & 0x7D5) == 0x605) && inMessage.rtr) {
@@ -154,7 +155,7 @@ static void callBack11 (const CANMessage & inMessage) {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void callBack12 (const CANMessage & inMessage) {
   if (!inMessage.ext && ((inMessage.id & 0x7D5) == 0x705)) {
@@ -164,7 +165,7 @@ static void callBack12 (const CANMessage & inMessage) {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void callBack13 (const CANMessage & inMessage) {
   if (!inMessage.ext && ((inMessage.id & 0x7D5) == 0x505)) {
@@ -174,7 +175,7 @@ static void callBack13 (const CANMessage & inMessage) {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 void setup () {
   pinMode (LED_BUILTIN, OUTPUT) ;
@@ -242,16 +243,19 @@ void setup () {
     Serial.print ("Error can configuration: 0x") ;
     Serial.println (errorCode, HEX) ;
   }
+  Serial.print ("CAN clock: ") ;
+  Serial.print (HAL_RCC_GetPCLK1Freq ()) ;
+  Serial.println (" Hz") ;
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static const uint32_t PERIOD = 1000 ;
 static uint32_t gBlinkDate = PERIOD ;
 static uint32_t gSentIdentifierAndFormat = 0 ;
 static bool gSendExtended = false ;
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void printCount (const uint32_t inActualCount, const uint32_t inExpectedCount) {
   Serial.print (", ") ;
@@ -264,7 +268,7 @@ static void printCount (const uint32_t inActualCount, const uint32_t inExpectedC
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 void loop () {
 //--- Send standard frame ?
@@ -278,7 +282,7 @@ void loop () {
       gOk = false ;
       Serial.print ("Sent error 0x") ;
       Serial.println (sendStatus) ;
-    } 
+    }
   }
 //--- All standard frame have been sent ?
   if (!gSendExtended && gOk && (gSentIdentifierAndFormat > 0xFFF)) {
@@ -297,7 +301,7 @@ void loop () {
       gOk = false ;
       Serial.print ("Sent error 0x") ;
       Serial.println (sendStatus) ;
-    } 
+    }
   }
 //--- Receive frame
   can.dispatchReceivedMessage () ;
@@ -326,4 +330,4 @@ void loop () {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------

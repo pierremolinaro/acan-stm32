@@ -1,8 +1,9 @@
 #include <ACAN_STM32_Settings.h>
+#include <Arduino.h>
 
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 //    CAN Settings
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 ACAN_STM32_Settings::ACAN_STM32_Settings (const uint32_t inWhishedBitRate,
                                           const uint32_t inTolerancePPM) :
@@ -11,6 +12,7 @@ mWhishedBitRate (inWhishedBitRate) {
   uint32_t smallestError = UINT32_MAX ;
   uint32_t bestBRP = 1024 ; // Setting for slowest bit rate
   uint32_t bestTQCount = 25 ; // Setting for slowest bit rate
+  const uint32_t CAN_CLOCK_FREQUENCY = HAL_RCC_GetPCLK1Freq () ;
   uint32_t BRP = CAN_CLOCK_FREQUENCY / inWhishedBitRate / TQCount ;
 
 //--- Loop for finding best BRP and best TQCount
@@ -63,23 +65,26 @@ mWhishedBitRate (inWhishedBitRate) {
   mBitRateClosedToDesiredRate = (diff * ppm) <= (uint64_t (W) * inTolerancePPM) ;
 } ;
 
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 uint32_t ACAN_STM32_Settings::actualBitRate (void) const {
   const uint32_t TQCount = 1 /* Sync Seg */ + mPhaseSegment1 + mPhaseSegment2 ;
+  const uint32_t CAN_CLOCK_FREQUENCY = HAL_RCC_GetPCLK1Freq () ;
   return CAN_CLOCK_FREQUENCY / mBitRatePrescaler / TQCount ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 bool ACAN_STM32_Settings::exactBitRate (void) const {
   const uint32_t TQCount = 1 /* Sync Seg */ + mPhaseSegment1 + mPhaseSegment2 ;
+  const uint32_t CAN_CLOCK_FREQUENCY = HAL_RCC_GetPCLK1Freq () ;
   return CAN_CLOCK_FREQUENCY == (mBitRatePrescaler * mWhishedBitRate * TQCount) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 uint32_t ACAN_STM32_Settings::ppmFromWishedBitRate (void) const {
+  const uint32_t CAN_CLOCK_FREQUENCY = HAL_RCC_GetPCLK1Freq () ;
   const uint32_t TQCount = 1 /* Sync Seg */ + mPhaseSegment1 + mPhaseSegment2 ;
   const uint32_t W = TQCount * mWhishedBitRate * mBitRatePrescaler ;
   const uint64_t diff = (CAN_CLOCK_FREQUENCY > W) ? (CAN_CLOCK_FREQUENCY - W) : (W - CAN_CLOCK_FREQUENCY) ;
@@ -87,7 +92,7 @@ uint32_t ACAN_STM32_Settings::ppmFromWishedBitRate (void) const {
   return (uint32_t) ((diff * ppm) / W) ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 uint32_t ACAN_STM32_Settings::samplePointFromBitStart (void) const {
   const uint32_t TQCount = 1 /* Sync Seg */ + mPhaseSegment1 + mPhaseSegment2 ;
@@ -96,7 +101,7 @@ uint32_t ACAN_STM32_Settings::samplePointFromBitStart (void) const {
   return (samplePoint * partPerCent) / TQCount ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 uint32_t ACAN_STM32_Settings::CANBitSettingConsistency (void) const {
   uint32_t errorCode = 0 ; // Means no error
@@ -129,4 +134,4 @@ uint32_t ACAN_STM32_Settings::CANBitSettingConsistency (void) const {
   return errorCode ;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------

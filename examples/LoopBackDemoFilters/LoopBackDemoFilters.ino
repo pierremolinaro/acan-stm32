@@ -1,14 +1,15 @@
+//----------------------------------------------------------------------------------------
 // This demo runs on NUCLEO_L432KC and NUCLEO_F303K8
 // The CAN module is configured in external loop back mode: it
 // internally receives every CAN frame it sends, and emitted frames
 // can be observed on TxCAN pin (D2, e.g. PA12).
 
 // No external hardware is required.
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 #include <ACAN_STM32.h>
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 void setup () {
   pinMode (LED_BUILTIN, OUTPUT) ;
@@ -76,9 +77,12 @@ void setup () {
     Serial.print ("Error can configuration: 0x") ;
     Serial.println (errorCode, HEX) ;
   }
+  Serial.print ("CAN clock: ") ;
+  Serial.print (HAL_RCC_GetPCLK1Freq ()) ;
+  Serial.println (" Hz") ;
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static const uint32_t PERIOD = 1000 ;
 static uint32_t gBlinkDate = PERIOD ;
@@ -88,7 +92,7 @@ static uint32_t gReceiveCountFIFO1 = 0 ;
 static bool gOk = true ;
 static bool gSendExtended = false ;
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static void printCount (const uint32_t inActualCount, const uint32_t inExpectedCount) {
   Serial.print (", ") ;
@@ -101,7 +105,7 @@ static void printCount (const uint32_t inActualCount, const uint32_t inExpectedC
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 void loop () {
 //--- Send standard frame ?
@@ -115,7 +119,7 @@ void loop () {
       gOk = false ;
       Serial.print ("Sent error 0x") ;
       Serial.println (sendStatus) ;
-    } 
+    }
   }
 //--- All standard frame have been sent ?
   if (!gSendExtended && gOk && (gSentIdentifierAndFormat > 0xFFF)) {
@@ -134,7 +138,7 @@ void loop () {
       gOk = false ;
       Serial.print ("Sent error 0x") ;
       Serial.println (sendStatus) ;
-    } 
+    }
   }
 //--- Receive frame
   CANMessage frame ;
@@ -156,4 +160,4 @@ void loop () {
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------

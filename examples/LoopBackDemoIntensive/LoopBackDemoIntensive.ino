@@ -1,18 +1,19 @@
+//----------------------------------------------------------------------------------------
 // This demo runs on NUCLEO_L432KC and NUCLEO_F303K8
 // The CAN module is configured in external loop back mode: it
 // internally receives every CAN frame it sends, and emitted frames
 // can be observed on TxCAN pin (D2, e.g. PA12).
 
 // No external hardware is required.
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 #include <ACAN_STM32.h>
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static ACAN_STM32_FIFO gBuffer ;
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 void setup () {
   gBuffer.initWithSize (100) ;
@@ -52,9 +53,12 @@ void setup () {
     Serial.print ("Error can configuration: 0x") ;
     Serial.println (errorCode, HEX) ;
   }
+  Serial.print ("CAN clock: ") ;
+  Serial.print (HAL_RCC_GetPCLK1Freq ()) ;
+  Serial.println (" Hz") ;
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static uint32_t pseudoRandomValue (void) {
   static uint32_t gSeed = 0 ;
@@ -62,7 +66,7 @@ static uint32_t pseudoRandomValue (void) {
   return gSeed ;
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 static const uint32_t PERIOD = 1000 ;
 static uint32_t gBlinkDate = PERIOD ;
@@ -74,7 +78,7 @@ static uint32_t gCanDataFrameCount = 0 ;
 static uint32_t gStandardFrameCount = 0 ;
 static uint32_t gExtendedFrameCount = 0 ;
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 void loop () {
   if (gBlinkDate <= millis ()) {
@@ -172,9 +176,9 @@ void loop () {
       Serial.print ("  LENGTH: ") ;
       Serial.print (storedFrame.len) ;
       Serial.print (" :: ") ;
-      Serial.println (receivedFrame.len) ;     
+      Serial.println (receivedFrame.len) ;
     }
   }
 }
 
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------
