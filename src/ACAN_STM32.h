@@ -294,12 +294,10 @@ class ACAN_STM32 {
 
 //----------------------------------------------------------------------------------------
 
-#ifdef ARDUINO_NUCLEO_F303K8
+#ifdef CAN1
   extern ACAN_STM32 can ;
-#elif defined (ARDUINO_NUCLEO_L432KC)
-  extern ACAN_STM32 can ;
-#elif defined (ARDUINO_GENERIC_F303K8TX)
-  extern ACAN_STM32 can ;
+#else
+  #error "This board has no CAN module"
 #endif
 
 //----------------------------------------------------------------------------------------
