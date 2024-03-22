@@ -9,7 +9,8 @@
 // extern const PinMap PinMap_CAN_TD[];
 // HAL_CAN_MODULE_ENABLED
 
-#if defined (ARDUINO_NUCLEO_F303K8) || defined (ARDUINO_GENERIC_F303K8TX)
+//#if defined (ARDUINO_NUCLEO_F303K8) || defined (ARDUINO_GENERIC_F303K8TX)
+#ifdef STM32F303x8
 
 //----------------------------------------------------------------------------------------
 

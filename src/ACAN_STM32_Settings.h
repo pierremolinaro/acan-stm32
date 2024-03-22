@@ -2,19 +2,13 @@
 
 //----------------------------------------------------------------------------------------
 
-#include <stdint.h>
+#include <Arduino.h>
 
 //----------------------------------------------------------------------------------------
 
-// #ifdef ARDUINO_NUCLEO_F303K8
-//   static const uint32_t CAN_CLOCK_FREQUENCY = 32 * 1000 * 1000 ; // 32 MHz
-// #elif defined (ARDUINO_NUCLEO_L432KC)
-//   static const uint32_t CAN_CLOCK_FREQUENCY = 80 * 1000 * 1000 ; // 80 MHz
-// #elif defined (ARDUINO_GENERIC_F303K8TX)
-//   static const uint32_t CAN_CLOCK_FREQUENCY = 32 * 1000 * 1000 ; // 32 MHz
-// #else
-//   #error "Unhandled Nucleo Board"
-// #endif
+#if !defined (STM32L4xx) && !defined(STM32F303x8)
+  #error "Unhandled STM32 Board"
+#endif
 
 //----------------------------------------------------------------------------------------
 

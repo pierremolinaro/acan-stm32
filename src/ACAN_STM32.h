@@ -10,9 +10,9 @@
 
 class ACAN_STM32 {
 
-//--------------------------------------------------------------------------------------------------
-//    Private Dynamic Array
-//--------------------------------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //    Private Dynamic Array
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   private: template <typename T> class DynamicArray {
   //--- Default constructor
@@ -80,14 +80,14 @@ class ACAN_STM32 {
     private : DynamicArray & operator = (const DynamicArray &) = delete ;
   } ;
 
-//--------------------------------------------------------------------------------------------------
-//    Filters
-//··································································································
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //    Filters
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   public: typedef enum { FIFO0, FIFO1 } Action ;
   public: typedef enum { DATA, REMOTE, DATA_OR_REMOTE } Format ;
 
-//--------------------------------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   public: class Filters {
   //--- Default constructor
@@ -189,7 +189,7 @@ class ACAN_STM32 {
     private : Filters & operator = (const Filters &) = delete ;
   } ;
 
-//--------------------------------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 //--- Constructor
   public: ACAN_STM32 (volatile uint32_t * inClockEnableRegisterAddress,
@@ -284,12 +284,17 @@ class ACAN_STM32 {
   private: uint32_t internalBegin (const ACAN_STM32_Settings & inSettings,
                                    const ACAN_STM32::Filters & inFilters) ;
   private: void internalDispatchReceivedMessage (const CANMessage & inMessage,
-                                                 const DynamicArray < ACANCallBackRoutine > & inCallBackArray) ;
+                          const DynamicArray < ACANCallBackRoutine > & inCallBackArray) ;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //--- No copy
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
- //--- No copy
   private : ACAN_STM32 (const ACAN_STM32 &) = delete ;
   private : ACAN_STM32 & operator = (const ACAN_STM32 &) = delete ;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 } ;
 
 //----------------------------------------------------------------------------------------
