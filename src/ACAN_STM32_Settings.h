@@ -6,7 +6,7 @@
 
 //----------------------------------------------------------------------------------------
 
-#if !defined (STM32L4xx) && !defined(STM32F303x8)
+#if !defined (STM32L4xx) && !defined(STM32F303x8) && !defined(STM32F103xB)
   #error "Unhandled STM32 Board"
 #endif
 

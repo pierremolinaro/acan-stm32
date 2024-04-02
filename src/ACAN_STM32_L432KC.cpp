@@ -49,6 +49,32 @@ void CAN1_TX_IRQHandler (void){
 
 //----------------------------------------------------------------------------------------
 
+void ACAN_STM32::configureTxPin (const bool inOpenCollector) {
+  const uint32_t txPinMask = 1U << mTxPinIndex ;
+  LL_GPIO_SetPinMode  (mTxPinGPIO, txPinMask, LL_GPIO_MODE_ALTERNATE) ;
+  LL_GPIO_SetPinOutputType (mTxPinGPIO, txPinMask, inOpenCollector ? LL_GPIO_OUTPUT_OPENDRAIN : LL_GPIO_OUTPUT_PUSHPULL) ;
+  LL_GPIO_SetPinSpeed (mTxPinGPIO, txPinMask, LL_GPIO_SPEED_FREQ_HIGH) ;
+  if (mTxPinIndex < 8) {
+    LL_GPIO_SetAFPin_0_7 (mTxPinGPIO, txPinMask, mTxPinAlternateMode) ;
+  }else{
+    LL_GPIO_SetAFPin_8_15 (mTxPinGPIO, txPinMask, mTxPinAlternateMode) ;
+  }
+}
+
+//----------------------------------------------------------------------------------------
+
+void ACAN_STM32::configureRxPin (void) {
+  const uint32_t rxPinMask = 1U << mRxPinIndex ;
+  LL_GPIO_SetPinMode  (mRxPinGPIO, rxPinMask, LL_GPIO_MODE_ALTERNATE) ;
+  if (mRxPinIndex < 8) {
+    LL_GPIO_SetAFPin_0_7 (mRxPinGPIO, rxPinMask, mRxPinAlternateMode) ;
+  }else{
+    LL_GPIO_SetAFPin_8_15 (mRxPinGPIO, rxPinMask, mRxPinAlternateMode) ;
+  }
+}
+
+//----------------------------------------------------------------------------------------
+
 #endif
 
 //----------------------------------------------------------------------------------------

@@ -1,14 +1,6 @@
 #include <ACAN_STM32.h>
 
 //----------------------------------------------------------------------------------------
-//    imin template function
-//----------------------------------------------------------------------------------------
-
-template <typename T> static inline T imin (const T inA, const T inB) {
-  return (inA <= inB) ? inA : inB ;
-}
-
-//----------------------------------------------------------------------------------------
 //    Constructor
 //----------------------------------------------------------------------------------------
 
@@ -106,24 +98,26 @@ uint32_t ACAN_STM32::internalBegin (const ACAN_STM32_Settings & inSettings,
   *mResetRegisterPointer &=  ~ (1U << mResetBitOffset) ;
 
 //---------------------------------------------- Configure TxPin
-  const uint32_t txPinMask = 1U << mTxPinIndex ;
-  LL_GPIO_SetPinMode  (mTxPinGPIO, txPinMask, LL_GPIO_MODE_ALTERNATE) ;
-  LL_GPIO_SetPinOutputType (mTxPinGPIO, txPinMask, inSettings.mOpenCollectorOutput ? LL_GPIO_OUTPUT_OPENDRAIN : LL_GPIO_OUTPUT_PUSHPULL) ;
-  LL_GPIO_SetPinSpeed (mTxPinGPIO, txPinMask, LL_GPIO_SPEED_FREQ_HIGH) ;
-  if (mTxPinIndex < 8) {
-    LL_GPIO_SetAFPin_0_7 (mTxPinGPIO, txPinMask, mTxPinAlternateMode) ;
-  }else{
-    LL_GPIO_SetAFPin_8_15 (mTxPinGPIO, txPinMask, mTxPinAlternateMode) ;
-  }
+  configureTxPin (inSettings.mOpenCollectorOutput) ;
+//   const uint32_t txPinMask = 1U << mTxPinIndex ;
+//   LL_GPIO_SetPinMode  (mTxPinGPIO, txPinMask, LL_GPIO_MODE_ALTERNATE) ;
+//   LL_GPIO_SetPinOutputType (mTxPinGPIO, txPinMask, inSettings.mOpenCollectorOutput ? LL_GPIO_OUTPUT_OPENDRAIN : LL_GPIO_OUTPUT_PUSHPULL) ;
+//   LL_GPIO_SetPinSpeed (mTxPinGPIO, txPinMask, LL_GPIO_SPEED_FREQ_HIGH) ;
+//   if (mTxPinIndex < 8) {
+//     LL_GPIO_SetAFPin_0_7 (mTxPinGPIO, txPinMask, mTxPinAlternateMode) ;
+//   }else{
+//     LL_GPIO_SetAFPin_8_15 (mTxPinGPIO, txPinMask, mTxPinAlternateMode) ;
+//   }
 
 //---------------------------------------------- Configure RxPin
-  const uint32_t rxPinMask = 1U << mRxPinIndex ;
-  LL_GPIO_SetPinMode  (mRxPinGPIO, rxPinMask, LL_GPIO_MODE_ALTERNATE) ;
-  if (mRxPinIndex < 8) {
-    LL_GPIO_SetAFPin_0_7 (mRxPinGPIO, rxPinMask, mRxPinAlternateMode) ;
-  }else{
-    LL_GPIO_SetAFPin_8_15 (mRxPinGPIO, rxPinMask, mRxPinAlternateMode) ;
-  }
+  configureRxPin () ;
+//   const uint32_t rxPinMask = 1U << mRxPinIndex ;
+//   LL_GPIO_SetPinMode  (mRxPinGPIO, rxPinMask, LL_GPIO_MODE_ALTERNATE) ;
+//   if (mRxPinIndex < 8) {
+//     LL_GPIO_SetAFPin_0_7 (mRxPinGPIO, rxPinMask, mRxPinAlternateMode) ;
+//   }else{
+//     LL_GPIO_SetAFPin_8_15 (mRxPinGPIO, rxPinMask, mRxPinAlternateMode) ;
+//   }
 
 //---------------------------------------------- Init CAN
 // set INRQ bit in MCR and wait until INAK bit in MSR is Ok.

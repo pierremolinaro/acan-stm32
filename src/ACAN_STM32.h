@@ -286,6 +286,9 @@ class ACAN_STM32 {
   private: void internalDispatchReceivedMessage (const CANMessage & inMessage,
                           const DynamicArray < ACANCallBackRoutine > & inCallBackArray) ;
 
+  private: void configureTxPin (const bool inOpenCollector) ;
+  private: void configureRxPin (void) ;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //--- No copy
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
