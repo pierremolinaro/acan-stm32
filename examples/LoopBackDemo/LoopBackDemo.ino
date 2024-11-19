@@ -72,13 +72,16 @@ void loop () {
     message.data [5] = 5 ;
     message.data [6] = 6 ;
     message.data [7] = 7 ;
-    const bool ok = can.tryToSendReturnStatus (message) ;
-    if (ok) {
+    const bool sendStatus = can.tryToSendReturnStatus (message) ;
+    if (sendStatus == 0) {
       digitalWrite (LED_BUILTIN, !digitalRead (LED_BUILTIN)) ;
       gSendDate += 1000 ;
       gSentCount += 1 ;
       Serial.print ("Sent: ") ;
       Serial.println (gSentCount) ;
+    }else{
+      Serial.print ("Send status error 0x") ;
+      Serial.println (sendStatus, HEX) ;
     }
   }
   if (can.receive0 (message)) {

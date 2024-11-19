@@ -1,8 +1,8 @@
 #include <ACAN_STM32.h>
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //    Constructor
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 ACAN_STM32::ACAN_STM32 (volatile uint32_t * inClockEnableRegisterPointer,
                         const uint8_t inClockEnableBitOffset,
@@ -34,9 +34,9 @@ mRxPinIndex (inRxPinIndex),
 mRxPinAlternateMode (inRxPinAlternateMode) {
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //    end
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void ACAN_STM32::end (void) {
 //--- Disable interrupts
@@ -53,13 +53,13 @@ void ACAN_STM32::end (void) {
   mFIFO1CallBackArray.free () ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //    begin method
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 static const uint32_t MAX_FILTER_COUNT = 14 ;
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 uint32_t ACAN_STM32::begin (const ACAN_STM32_Settings & inSettings,
                             const ACAN_STM32::Filters & inFilters) {
@@ -74,7 +74,7 @@ uint32_t ACAN_STM32::begin (const ACAN_STM32_Settings & inSettings,
   return errorCode ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 uint32_t ACAN_STM32::internalBegin (const ACAN_STM32_Settings & inSettings,
                                     const ACAN_STM32::Filters & inFilters) {
@@ -220,9 +220,9 @@ uint32_t ACAN_STM32::internalBegin (const ACAN_STM32_Settings & inSettings,
    return errorCode ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //   RECEPTION
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::available0 (void) const {
   noInterrupts () ;
@@ -231,7 +231,7 @@ bool ACAN_STM32::available0 (void) const {
   return hasMessage ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::receive0 (CANMessage & outMessage) {
   noInterrupts () ;
@@ -240,7 +240,7 @@ bool ACAN_STM32::receive0 (CANMessage & outMessage) {
   return hasMessage ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::available1 (void) const {
   noInterrupts () ;
@@ -249,7 +249,7 @@ bool ACAN_STM32::available1 (void) const {
   return hasMessage ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::receive1 (CANMessage & outMessage) {
   noInterrupts () ;
@@ -258,7 +258,7 @@ bool ACAN_STM32::receive1 (CANMessage & outMessage) {
   return hasMessage ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void ACAN_STM32::internalDispatchReceivedMessage (const CANMessage & inMessage,
                                                   const DynamicArray < ACANCallBackRoutine > & inCallBackArray) {
@@ -271,7 +271,7 @@ void ACAN_STM32::internalDispatchReceivedMessage (const CANMessage & inMessage,
   }
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::dispatchReceivedMessage (void) {
   CANMessage receivedMessage ;
@@ -287,7 +287,7 @@ bool ACAN_STM32::dispatchReceivedMessage (void) {
   return hasReceived ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::dispatchReceivedMessage0 (void) {
   CANMessage receivedMessage ;
@@ -298,7 +298,7 @@ bool ACAN_STM32::dispatchReceivedMessage0 (void) {
   return hasReceived ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::dispatchReceivedMessage1 (void) {
   CANMessage receivedMessage ;
@@ -309,9 +309,9 @@ bool ACAN_STM32::dispatchReceivedMessage1 (void) {
   return hasReceived ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //   EMISSION
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::sendBufferNotFullForIndex (const uint32_t inBufferIndex) {
   bool ok = false ;
@@ -325,7 +325,7 @@ bool ACAN_STM32::sendBufferNotFullForIndex (const uint32_t inBufferIndex) {
   return ok ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 uint32_t ACAN_STM32::tryToSendReturnStatus (const CANMessage & inMessage) {
   uint32_t sendStatus = 0 ; // Means ok
@@ -364,7 +364,7 @@ uint32_t ACAN_STM32::tryToSendReturnStatus (const CANMessage & inMessage) {
   return sendStatus ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void ACAN_STM32::writeTxRegisters (const CANMessage & inMessage, const uint32_t inBufferIndex) {
 //--- Write rtr, ext, identifier
@@ -385,9 +385,9 @@ void ACAN_STM32::writeTxRegisters (const CANMessage & inMessage, const uint32_t 
   mCAN->sTxMailBox [inBufferIndex].TIR |= 1 ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //   MESSAGE INTERRUPT SERVICE ROUTINES
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void ACAN_STM32::message_isr_rx0 (void) {
   if ((mCAN->RF0R & 0x3) != 0) { //case 1: FIFO 0 message pending
@@ -426,7 +426,7 @@ void ACAN_STM32::message_isr_rx0 (void) {
   }
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void ACAN_STM32::message_isr_rx1 (void) {
 //case 1: FIFO 1 message pending
@@ -466,7 +466,7 @@ void ACAN_STM32::message_isr_rx1 (void) {
   }
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void ACAN_STM32::message_isr_tx (void) {
   //interrupt acks when a message has been succesfully transmitted
@@ -489,13 +489,13 @@ void ACAN_STM32::message_isr_tx (void) {
   mCAN->TSR |= CAN_TSR_RQCP0 ; //mailbox 0
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //   FILTERS
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 static const uint32_t EXTENDED_IDENTIFIER_MAX = 0x1FFFFFFF ;
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::Filters::addStandardMasks (const uint16_t inBase1,
                                             const uint16_t inMask1,
@@ -509,7 +509,7 @@ bool ACAN_STM32::Filters::addStandardMasks (const uint16_t inBase1,
                            inAction) ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::Filters::addStandardMasks (const uint16_t inBase1,
                                             const uint16_t inMask1,
@@ -568,7 +568,7 @@ bool ACAN_STM32::Filters::addStandardMasks (const uint16_t inBase1,
   return ok ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::Filters::addStandardQuad (const uint16_t inIdentifier1,
                                            const bool inRTR1,
@@ -586,7 +586,7 @@ bool ACAN_STM32::Filters::addStandardQuad (const uint16_t inIdentifier1,
                           inAction) ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::Filters::addStandardQuad (const uint16_t inIdentifier1,
                                            const bool inRTR1,
@@ -644,7 +644,7 @@ bool ACAN_STM32::Filters::addStandardQuad (const uint16_t inIdentifier1,
   return ok ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::Filters::addExtendedMask (const uint32_t inBase,
                                            const uint32_t inMask,
@@ -653,7 +653,7 @@ bool ACAN_STM32::Filters::addExtendedMask (const uint32_t inBase,
   return addExtendedMask (inBase, inMask, inFormat, nullptr, inAction);
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::Filters::addExtendedMask (const uint32_t inBase,
                                            const uint32_t inMask,
@@ -695,7 +695,7 @@ bool ACAN_STM32::Filters::addExtendedMask (const uint32_t inBase,
   return ok ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::Filters::addExtendedDual (const uint32_t inIdentifier1,
                                            const bool inRTR1,
@@ -707,7 +707,7 @@ bool ACAN_STM32::Filters::addExtendedDual (const uint32_t inIdentifier1,
                           inAction) ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32::Filters::addExtendedDual (const uint32_t inIdentifier1,
                                            const bool inRTR1,
@@ -748,4 +748,4 @@ bool ACAN_STM32::Filters::addExtendedDual (const uint32_t inIdentifier1,
   return ok ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------

@@ -1,9 +1,9 @@
 #include <ACAN_STM32_Settings.h>
 #include <Arduino.h>
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //    CAN Settings
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 ACAN_STM32_Settings::ACAN_STM32_Settings (const uint32_t inWhishedBitRate,
                                           const uint32_t inTolerancePPM) :
@@ -65,7 +65,7 @@ mWhishedBitRate (inWhishedBitRate) {
   mBitRateClosedToDesiredRate = (diff * ppm) <= (uint64_t (W) * inTolerancePPM) ;
 } ;
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 uint32_t ACAN_STM32_Settings::actualBitRate (void) const {
   const uint32_t TQCount = 1 /* Sync Seg */ + mPhaseSegment1 + mPhaseSegment2 ;
@@ -73,7 +73,7 @@ uint32_t ACAN_STM32_Settings::actualBitRate (void) const {
   return CAN_CLOCK_FREQUENCY / mBitRatePrescaler / TQCount ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool ACAN_STM32_Settings::exactBitRate (void) const {
   const uint32_t TQCount = 1 /* Sync Seg */ + mPhaseSegment1 + mPhaseSegment2 ;
@@ -81,7 +81,7 @@ bool ACAN_STM32_Settings::exactBitRate (void) const {
   return CAN_CLOCK_FREQUENCY == (mBitRatePrescaler * mWhishedBitRate * TQCount) ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 uint32_t ACAN_STM32_Settings::ppmFromWishedBitRate (void) const {
   const uint32_t CAN_CLOCK_FREQUENCY = HAL_RCC_GetPCLK1Freq () ;
@@ -92,7 +92,7 @@ uint32_t ACAN_STM32_Settings::ppmFromWishedBitRate (void) const {
   return (uint32_t) ((diff * ppm) / W) ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 uint32_t ACAN_STM32_Settings::samplePointFromBitStart (void) const {
   const uint32_t TQCount = 1 /* Sync Seg */ + mPhaseSegment1 + mPhaseSegment2 ;
@@ -101,7 +101,7 @@ uint32_t ACAN_STM32_Settings::samplePointFromBitStart (void) const {
   return (samplePoint * partPerCent) / TQCount ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 uint32_t ACAN_STM32_Settings::CANBitSettingConsistency (void) const {
   uint32_t errorCode = 0 ; // Means no error
@@ -134,4 +134,4 @@ uint32_t ACAN_STM32_Settings::CANBitSettingConsistency (void) const {
   return errorCode ;
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
